@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <meta name="theme-color" content="#f6f7f9">
+    <meta name="description" content="部署 Cloudflare Worker + D1 离线同步服务，并在浏览器本地生成主密钥。">
+    <meta name="repository-url" content="__REPOSITORY_URL__">
+    <meta property="og:title" content="D1 Sync">
+    <meta property="og:description" content="一个主密钥即可部署的离线优先云同步服务。">
+    <meta property="og:type" content="website">
+    <title>D1 Sync</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <h1>D1 Sync</h1>
+      <a class="github-button" data-repository-link href="__REPOSITORY_URL__">GitHub ↗</a>
+    </header>
+
+    <main id="top" class="cards">
+      <section class="card intro-card" aria-labelledby="intro-title">
+        <h2 id="intro-title"><span>1</span> 您需要先了解</h2>
+        <p>本项目用 Cloudflare Worker 和 D1 在多台设备间同步数据库。</p>
+        <p class="quota"><strong>用量限制：</strong>D1 免费版每日读取 500 万行、写入 10 万行；单库 500 MB、账户共 5 GB。实际额度以 <a href="https://developers.cloudflare.com/d1/platform/pricing/">Cloudflare 官方说明</a>为准。</p>
+        <br>
+        <p><strong>操作步骤：</strong></p>
+        <ol class="steps">
+          <li><strong>生成密钥：</strong>在下方生成主密钥 <strong>MASTER_KEY</strong> 并复制。</li>
+          <li><strong>开始部署：</strong>点击 Deploy to Cloudflare，进入 Cloudflare Worker 创建页面。</li>
+          <li><strong>填写信息：</strong>您需要把主密钥填入部署表单的 <strong>MASTER_KEY</strong> 选项；至于其他选项，您可以自行决定。</li>
+          <li><strong>部署之后：</strong>您需要保存主密钥和 Cloudflare worker 网址。</li>
+        </ol>
+      </section>
+
+      <section class="card key-card" aria-labelledby="key-title">
+        <h2 id="key-title"><span>2</span> 生成主密钥</h2>
+        <textarea id="master-key" rows="2" readonly spellcheck="false" autocomplete="off" placeholder="点击生成按钮"></textarea>
+        <div class="key-actions">
+          <button id="generate-key" class="button primary" type="button">生成</button>
+          <button id="copy-key" class="button" type="button" disabled>复制</button>
+        </div>
+        <p id="key-status" class="status" aria-live="polite">尚未生成</p>
+        <ul class="rules">
+          <li>密钥只在本浏览器内生成，不上传、不存储；刷新或离开页面后立即丢失。</li>
+          <li>请保存到密码管理器；客户端应使用系统安全凭据存储，页面和 Cloudflare 都无法恢复原值。</li>
+          <li>密钥丢失或设备疑似泄露时，请重新生成主密钥替换 Worker 的 Secret，并重新配置全部设备。</li>
+        </ul>
+      </section>
+
+      <section class="card deploy-card" aria-labelledby="deploy-title">
+        <h2 id="deploy-title"><span>3</span> 部署</h2>
+        <p>先生成、复制并安全保存密钥，然后启动部署。</p>
+        <a id="deploy-button" class="deploy-button is-disabled" href="#" aria-disabled="true" target="_blank">Deploy to Cloudflare ↗</a>
+        <p class="fine-print">注意：主密钥不包含在该链接内，必须在部署表单中手动填入。</p>
+      </section>
+    </main>
+  </body>
+</html>
