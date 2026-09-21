@@ -1,0 +1,2 @@
+# Generate a local 256-bit key; never commit .dev.vars.
+MASTER_KEY=""

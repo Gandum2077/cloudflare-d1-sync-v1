@@ -1,0 +1,48 @@
+{
+  "name": "cloudflare-d1-sync-v1",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "dev": "wrangler dev --local",
+    "types": "wrangler types --env-file .dev.vars.example --strict-vars false",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "build": "wrangler deploy --dry-run --outdir dist",
+    "check": "npm run format:check && npm run typecheck && npm test && npm run build",
+    "db:migrate:local": "wrangler d1 migrations apply DB --local",
+    "db:migrate:remote": "wrangler d1 migrations apply DB --remote",
+    "deploy": "npm run db:migrate:remote && wrangler deploy",
+    "format": "prettier --write src test vitest.config.ts",
+    "format:check": "prettier --check src test vitest.config.ts"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "cloudflare": {
+    "bindings": {
+      "DB": {
+        "description": "Private synchronized JSON data and recent changes."
+      },
+      "MASTER_KEY": {
+        "description": "64 lowercase hex characters generated locally in the guide. Store as a Secret."
+      }
+    }
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "^0.22.0",
+    "@cloudflare/workers-types": "^5.20260916.1",
+    "@types/node": "^22.20.3",
+    "prettier": "^3.9.6",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.11",
+    "wrangler": "^4.132.0"
+  },
+  "dependencies": {
+    "@streamparser/json": "^0.0.26"
+  },
+  "overrides": {
+    "sharp": "^0.35.4"
+  }
+}
